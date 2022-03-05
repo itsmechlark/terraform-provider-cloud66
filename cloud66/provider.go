@@ -38,6 +38,9 @@ func Provider() *schema.Provider {
 		DataSourcesMap: map[string]*schema.Resource{
 			"cloud66_stack": dataSourceCloud66Stack(),
 		},
+		ResourcesMap: map[string]*schema.Resource{
+			"cloud66_ssl_certificate": resourceCloud66SslCertificate(),
+		},
 	}
 
 	return provider

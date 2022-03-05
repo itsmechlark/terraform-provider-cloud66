@@ -53,8 +53,8 @@ data "cloud66_stack" "%[3]s" {
 }
 
 func TestAccCloud66Stack_UidLookup(t *testing.T) {
-
 	t.Parallel()
+
 	rnd := generateRandomResourceName()
 	uid := generateRandomUid()
 	name := fmt.Sprintf("data.cloud66_stack.%s", rnd)
