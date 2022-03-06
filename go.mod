@@ -17,7 +17,7 @@ require (
 	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
-	github.com/hashicorp/go-cleanhttp v0.5.2
+	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320 // indirect
 	github.com/hashicorp/go-hclog v0.16.1 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
@@ -60,6 +60,5 @@ require (
 	github.com/hashicorp/terraform-exec v0.15.0 // indirect
 	github.com/hashicorp/terraform-json v0.13.0 // indirect
 	github.com/jarcoal/httpmock v1.1.0
-	github.com/moemoe89/go-helpers v1.0.0
 	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e // indirect
 )
