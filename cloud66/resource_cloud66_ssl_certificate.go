@@ -178,7 +178,6 @@ func setCloud66SslCertificateData(d *schema.ResourceData, ssl *api.SslCertificat
 	d.Set("type", ssl.Type)
 	d.Set("ssl_termination", ssl.SSLTermination)
 	d.Set("server_group_id", ssl.ServerGroupID)
-	d.Set("intermediate_certificate", ssl.IntermediateCertificate)
 	d.Set("has_intermediate_cert", ssl.HasIntermediateCert)
 	d.Set("status", ssl.Status())
 

@@ -1,4 +1,4 @@
-TEST?=$$(go list ./cloud66)
+TEST?=$$(go list ./...)
 GOFMT_FILES?=$$(find . -name '*.go')
 WEBSITE_REPO=github.com/hashicorp/terraform-website
 PKG_NAME=cloud66
@@ -10,7 +10,7 @@ build: vet fmt
 	go install
 
 test: fmt
-	go test $(TEST) || exit 1
+	go test -v $(TEST) || exit 1
 	echo $(TEST) | xargs -t -n4 go test $(TESTARGS) -timeout=30s -parallel=4 -race
 
 testacc: fmt

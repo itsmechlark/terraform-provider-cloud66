@@ -34,7 +34,7 @@ func resourceCloud66SslCertificateSchema() map[string]*schema.Schema {
 			Default:  true,
 		},
 		"server_group_id": {
-			Type:     schema.TypeString,
+			Type:     schema.TypeInt,
 			Optional: true,
 		},
 		"server_names": {

@@ -59,6 +59,7 @@ require (
 	github.com/hashicorp/logutils v1.0.0 // indirect
 	github.com/hashicorp/terraform-exec v0.15.0 // indirect
 	github.com/hashicorp/terraform-json v0.13.0 // indirect
+	github.com/jarcoal/httpmock v1.1.0
 	github.com/moemoe89/go-helpers v1.0.0
 	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e // indirect
 )
