@@ -35,15 +35,15 @@ func resourceCloud66SslCertificateCreate(d *schema.ResourceData, meta interface{
 
 	stackID := d.Get("stack_id").(string)
 
-	hostnames := []string{}
-	hostnamesRaw := d.Get("server_names").(*schema.Set)
-	for _, h := range hostnamesRaw.List() {
-		hostnames = append(hostnames, h.(string))
+	servernames := []string{}
+	servernamesRaw := d.Get("server_names").(*schema.Set)
+	for _, h := range servernamesRaw.List() {
+		servernames = append(servernames, h.(string))
 	}
 
 	newRecord := api.SslCertificate{
 		Type:           d.Get("type").(string),
-		ServerNames:    strings.Join(hostnames, ","),
+		ServerNames:    strings.Join(servernames, ","),
 		SSLTermination: d.Get("ssl_termination").(bool),
 	}
 
@@ -97,15 +97,15 @@ func resourceCloud66SslCertificateUpdate(d *schema.ResourceData, meta interface{
 	stackID := d.Get("stack_id").(string)
 	sslID := d.Id()
 
-	hostnames := []string{}
-	hostnamesRaw := d.Get("server_names").(*schema.Set)
-	for _, h := range hostnamesRaw.List() {
-		hostnames = append(hostnames, h.(string))
+	servernames := []string{}
+	servernamesRaw := d.Get("server_names").(*schema.Set)
+	for _, h := range servernamesRaw.List() {
+		servernames = append(servernames, h.(string))
 	}
 
 	newRecord := api.SslCertificate{
 		Type:           d.Get("type").(string),
-		ServerNames:    strings.Join(hostnames, ","),
+		ServerNames:    strings.Join(servernames, ","),
 		SSLTermination: d.Get("ssl_termination").(bool),
 	}
 
@@ -178,8 +178,13 @@ func setCloud66SslCertificateData(d *schema.ResourceData, ssl *api.SslCertificat
 	d.Set("type", ssl.Type)
 	d.Set("ssl_termination", ssl.SSLTermination)
 	d.Set("server_group_id", ssl.ServerGroupID)
-	d.Set("server_names", strings.Split(ssl.ServerNames, ","))
 	d.Set("intermediate_certificate", ssl.IntermediateCertificate)
 	d.Set("has_intermediate_cert", ssl.HasIntermediateCert)
 	d.Set("status", ssl.Status())
+
+	servernames := schema.NewSet(schema.HashString, []interface{}{})
+	for _, h := range strings.Split(ssl.ServerNames, ",") {
+		servernames.Add(h)
+	}
+	d.Set("server_names", servernames)
 }

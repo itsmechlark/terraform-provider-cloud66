@@ -38,8 +38,8 @@ func resourceCloud66SslCertificateSchema() map[string]*schema.Schema {
 			Optional: true,
 		},
 		"server_names": {
-			Type:     schema.TypeList,
-			Optional: true,
+			Type:     schema.TypeSet,
+			Required: true,
 			Elem: &schema.Schema{
 				Type: schema.TypeString,
 			},
