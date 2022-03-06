@@ -26,10 +26,10 @@ func Provider() *schema.Provider {
 			},
 			"access_token": {
 				Type:         schema.TypeString,
-				Optional:     true,
+				Required:     true,
 				DefaultFunc:  schema.EnvDefaultFunc("CLOUD66_ACCESS_TOKEN", nil),
 				Description:  "The Access Token for operations.",
-				ValidateFunc: validation.StringMatch(regexp.MustCompile("[A-Za-z0-9-_]{64}"), "Access tokens must only contain characters a-z, A-Z, 0-9, hyphens and underscores"),
+				ValidateFunc: validation.StringMatch(regexp.MustCompile("[A-Za-z0-9-_]{43}"), "Access tokens must only contain characters a-z, A-Z, 0-9, hyphens and underscores"),
 			},
 		},
 

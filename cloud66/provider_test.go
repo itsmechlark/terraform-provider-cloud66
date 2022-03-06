@@ -18,7 +18,7 @@ var (
 	testAccProvider  *schema.Provider
 
 	// Integration test access token
-	testAccCloud66AccessToken string = "bEVxqlsN800QT0UqVnDBRPXKbaPbkpOAQOMCbZTVV9uvEF2gVEcR2sHhhxMPQaMx"
+	testAccCloud66AccessToken string = "bEVxqlsN800QT0UqVnDBRPXKbaPbkpOAQOMCbZTVV9u"
 )
 
 func init() {
