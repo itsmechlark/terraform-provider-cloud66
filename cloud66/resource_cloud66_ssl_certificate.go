@@ -35,9 +35,15 @@ func resourceCloud66SslCertificateCreate(d *schema.ResourceData, meta interface{
 
 	stackID := d.Get("stack_id").(string)
 
+	hostnames := []string{}
+	hostnamesRaw := d.Get("server_names").(*schema.Set)
+	for _, h := range hostnamesRaw.List() {
+		hostnames = append(hostnames, h.(string))
+	}
+
 	newRecord := api.SslCertificate{
 		Type:           d.Get("type").(string),
-		ServerNames:    d.Get("server_names").(string),
+		ServerNames:    strings.Join(hostnames, ","),
 		SSLTermination: d.Get("ssl_termination").(bool),
 	}
 
@@ -91,9 +97,15 @@ func resourceCloud66SslCertificateUpdate(d *schema.ResourceData, meta interface{
 	stackID := d.Get("stack_id").(string)
 	sslID := d.Id()
 
+	hostnames := []string{}
+	hostnamesRaw := d.Get("server_names").(*schema.Set)
+	for _, h := range hostnamesRaw.List() {
+		hostnames = append(hostnames, h.(string))
+	}
+
 	newRecord := api.SslCertificate{
 		Type:           d.Get("type").(string),
-		ServerNames:    d.Get("server_names").(string),
+		ServerNames:    strings.Join(hostnames, ","),
 		SSLTermination: d.Get("ssl_termination").(bool),
 	}
 
