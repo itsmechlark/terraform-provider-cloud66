@@ -7,10 +7,14 @@ import (
 
 func resourceCloud66SslCertificateSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
+		"uuid": {
+			Type:     schema.TypeString,
+			Computed: true,
+			Optional: true,
+		},
 		"stack_id": {
 			Type:     schema.TypeString,
-			Required: true,
-			ForceNew: true,
+			Optional: true,
 		},
 		"name": {
 			Type:     schema.TypeString,
@@ -59,6 +63,11 @@ func resourceCloud66SslCertificateSchema() map[string]*schema.Schema {
 		},
 		"has_intermediate_cert": {
 			Type:     schema.TypeBool,
+			Computed: true,
+			Optional: true,
+		},
+		"sha256_fingerprint": {
+			Type:     schema.TypeString,
 			Computed: true,
 			Optional: true,
 		},

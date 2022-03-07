@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"github.com/jarcoal/httpmock"
 )
 
 func TestAccCloud66SslCertificate_LetsEncrypt(t *testing.T) {
@@ -29,20 +28,17 @@ func TestAccCloud66SslCertificate_LetsEncrypt(t *testing.T) {
 				Config: testAccCloud66SslCertificate_LetsEncrypt(stackID, rnd),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCloud66SslCertificateAttributes(stackID, &ssl),
-					resource.TestCheckResourceAttr(resourceName, "stack_id", stackID),
-					resource.TestCheckResourceAttr(resourceName, "name", "my-serv-new"),
 					resource.TestCheckResourceAttr(resourceName, "ca_name", "Let's Encrypt"),
 					resource.TestCheckResourceAttr(resourceName, "type", "lets_encrypt"),
 					resource.TestCheckResourceAttr(resourceName, "ssl_termination", "true"),
 					resource.TestCheckResourceAttr(resourceName, "server_group_id", "0"),
 					resource.TestCheckResourceAttr(resourceName, "server_names.#", "1"),
 					resource.TestCheckResourceAttr(resourceName, "has_intermediate_cert", "true"),
+					resource.TestCheckResourceAttr(resourceName, "sha256_fingerprint", "UXXsUuBNZQhNBBsPjaEATCA8t06O2RvgxuMC16q1XLCCHkIitBvMcDqoUpNO16oK"),
 				),
 			},
 		},
 	})
-
-	httpmock.GetTotalCallCount()
 }
 
 func testAccCloud66SslCertificate_LetsEncrypt(stactID string, rnd string) string {
@@ -62,6 +58,7 @@ resource "cloud66_ssl_certificate" "%[3]s" {
 func TestAccCloud66SslCertificate_Manual(t *testing.T) {
 	t.Parallel()
 
+	var ssl api.SslCertificate
 	rnd := generateRandomResourceName()
 	stackID := generateRandomUid()
 	uid := generateRandomUid()
@@ -75,14 +72,14 @@ func TestAccCloud66SslCertificate_Manual(t *testing.T) {
 			{
 				Config: testAccCloud66SslCertificate_Manual(stackID, rnd),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "stack_id", stackID),
-					resource.TestCheckResourceAttr(resourceName, "name", "my-serv-new"),
+					testAccCloud66SslCertificateAttributes(stackID, &ssl),
 					resource.TestCheckResourceAttr(resourceName, "ca_name", ""),
 					resource.TestCheckResourceAttr(resourceName, "type", "manual"),
 					resource.TestCheckResourceAttr(resourceName, "ssl_termination", "true"),
 					resource.TestCheckResourceAttr(resourceName, "server_group_id", "0"),
 					resource.TestCheckResourceAttr(resourceName, "server_names.#", "1"),
 					resource.TestCheckResourceAttr(resourceName, "has_intermediate_cert", "false"),
+					resource.TestCheckResourceAttr(resourceName, "sha256_fingerprint", "f33832c92a78e776c15fed3f9d1f6fb4b7f0f2ce7f126c2495ea62618ef8e195"),
 				),
 			},
 		},

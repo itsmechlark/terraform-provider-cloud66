@@ -77,14 +77,19 @@ func resourceCloud66SslCertificateRead(d *schema.ResourceData, meta interface{})
 	providerConfig := meta.(ProviderConfig)
 	client := providerConfig.client
 
-	stackID := d.Get("stack_id").(string)
-	sslID := d.Id()
+	stackID := d.Id()
 
-	record, err := client.GetSslCertificate(stackID, sslID)
-	if record != nil {
-		setCloud66SslCertificateData(d, record)
+	records, err := client.ListSslCertificates(stackID)
+	if records != nil {
+		for _, record := range records {
+			sha256Fingerprint := *record.SHA256Fingerprint
+			if sha256Fingerprint == d.Get("sha256_fingerprint").(string) {
+				setCloud66SslCertificateData(d, &record)
+				break
+			}
+		}
 	} else {
-		return fmt.Errorf("error reading SSL Certificate %q: %s", sslID, err)
+		return fmt.Errorf("error reading SSL Certificate %q: %s", stackID, err)
 	}
 
 	return nil
@@ -94,8 +99,8 @@ func resourceCloud66SslCertificateUpdate(d *schema.ResourceData, meta interface{
 	providerConfig := meta.(ProviderConfig)
 	client := providerConfig.client
 
-	stackID := d.Get("stack_id").(string)
-	sslID := d.Id()
+	stackID := d.Id()
+	sslID := d.Get("uuid").(string)
 
 	servernames := []string{}
 	servernamesRaw := d.Get("server_names").(*schema.Set)
@@ -139,14 +144,25 @@ func resourceCloud66SslCertificateDelete(d *schema.ResourceData, meta interface{
 	providerConfig := meta.(ProviderConfig)
 	client := providerConfig.client
 
-	stackID := d.Get("stack_id").(string)
-	sslID := d.Id()
+	stackID := d.Id()
+	sslID := d.Get("uuid").(string)
 
-	log.Printf("[DEBUG] Deleting SSL Cert %s for stack %s", sslID, stackID)
+	records, err := client.ListSslCertificates(stackID)
+	if records != nil {
+		for _, record := range records {
+			sha256Fingerprint := *record.SHA256Fingerprint
+			if sha256Fingerprint == d.Get("sha256_fingerprint").(string) || (sslID != "" && sslID == record.Uuid) {
+				log.Printf("[DEBUG] Deleting SSL Cert %s for stack %s", sslID, stackID)
+				record, err := client.DestroySslCertificate(stackID, sslID)
 
-	record, err := client.DestroySslCertificate(stackID, sslID)
-	if record == nil {
-		return fmt.Errorf("error deleting SSL Certificate %q: %s", stackID, err)
+				if record == nil {
+					return fmt.Errorf("error deleting SSL Certificate %q: %s", stackID, err)
+				}
+				break
+			}
+		}
+	} else {
+		return fmt.Errorf("error reading SSL Certificate %q: %s", stackID, err)
 	}
 
 	return nil
@@ -172,13 +188,17 @@ func resourceCloud66SslCertificateImport(d *schema.ResourceData, meta interface{
 }
 
 func setCloud66SslCertificateData(d *schema.ResourceData, ssl *api.SslCertificate) {
-	d.SetId(ssl.Uuid)
+	stackID := d.Get("stack_id").(string)
+
+	d.SetId(stackID)
+	d.Set("uuid", ssl.Uuid)
 	d.Set("name", ssl.Name)
 	d.Set("ca_name", ssl.CAName)
 	d.Set("type", ssl.Type)
 	d.Set("ssl_termination", ssl.SSLTermination)
 	d.Set("server_group_id", ssl.ServerGroupID)
 	d.Set("has_intermediate_cert", ssl.HasIntermediateCert)
+	d.Set("sha256_fingerprint", ssl.SHA256Fingerprint)
 	d.Set("status", ssl.Status())
 
 	servernames := schema.NewSet(schema.HashString, []interface{}{})

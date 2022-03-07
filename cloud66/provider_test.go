@@ -131,11 +131,45 @@ func testAccCloud66Stack(uid string, name string) {
 }
 
 func testAccCloud66SslCertificateLetsEncrypt(stackID string, uid string) {
-	data := fmt.Sprintf(`
+	sslData := fmt.Sprintf(`
+	{
+		"uuid": "ssl-%[1]s",
+		"name": "my-serv-new",
+		"server_group_id": null,
+		"server_names": "example.com",
+		"sha256_fingerprint": "UXXsUuBNZQhNBBsPjaEATCA8t06O2RvgxuMC16q1XLCCHkIitBvMcDqoUpNO16oK",
+		"ca_name": "Let's Encrypt",
+		"type": "lets_encrypt",
+		"ssl_termination": true,
+		"has_intermediate_cert": true,
+		"status": 3,
+		"created_at": "2019-10-23T14:15:53Z",
+		"updated_at": "2020-03-04T12:48:25Z",
+		"expires_at": "2020-06-02T11:48:04Z",
+		"certificate": null,
+		"key": null,
+		"intermediate_certificate": null
+	}`, uid)
+
+	listSslResponse := fmt.Sprintf(`
+	{
+		"response": [%[1]s],
+		"count": 1,
+		"pagination": {
+			"previous": null,
+			"next": null,
+			"current": 1,
+			"per_page": 30,
+			"count": 1,
+			"pages": 1
+		}
+	}`, sslData)
+	deleteSslResponse := fmt.Sprintf(`{"response": %[1]s}`, sslData)
+	createSslResponse := fmt.Sprintf(`
 	{
 		"response": {
-			"uuid": "ssl-%[1]s",
-			"name": "my-serv-new",
+			"uuid": null,
+			"name": null,
 			"server_group_id": null,
 			"server_names": "example.com",
 			"sha256_fingerprint": "UXXsUuBNZQhNBBsPjaEATCA8t06O2RvgxuMC16q1XLCCHkIitBvMcDqoUpNO16oK",
@@ -143,28 +177,61 @@ func testAccCloud66SslCertificateLetsEncrypt(stackID string, uid string) {
 			"type": "lets_encrypt",
 			"ssl_termination": true,
 			"has_intermediate_cert": true,
-			"status": 3,
+			"status": 1,
 			"created_at": "2019-10-23T14:15:53Z",
 			"updated_at": "2020-03-04T12:48:25Z",
-			"expires_at": "2020-06-02T11:48:04Z",
+			"expires_at": null,
 			"certificate": null,
 			"key": null,
 			"intermediate_certificate": null
 		}
-	}
-`, uid)
+	}`)
 
-	httpmock.RegisterResponder("POST", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, data))
-	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates/ssl-"+uid+".json", httpmock.NewStringResponder(200, data))
-	httpmock.RegisterResponder("DELETE", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates/ssl-"+uid+".json", httpmock.NewStringResponder(200, data))
+	httpmock.RegisterResponder("POST", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, createSslResponse))
+	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, listSslResponse))
+	httpmock.RegisterResponder("DELETE", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates/ssl-"+uid+".json", httpmock.NewStringResponder(200, deleteSslResponse))
 }
 
 func testAccCloud66SslCertificateManual(stackID string, uid string) {
-	data := fmt.Sprintf(`
+	sslData := fmt.Sprintf(`
+	{
+		"uuid": "ssl-%[1]s",
+		"name": "my-serv-new",
+		"server_group_id": null,
+		"server_names": "example.com",
+		"sha256_fingerprint": "f33832c92a78e776c15fed3f9d1f6fb4b7f0f2ce7f126c2495ea62618ef8e195",
+		"ca_name": null,
+		"type": "manual",
+		"ssl_termination": true,
+		"has_intermediate_cert": false,
+		"status": 3,
+		"created_at": "2019-10-23T14:15:53Z",
+		"updated_at": "2020-03-04T12:48:25Z",
+		"expires_at": "2020-06-02T11:48:04Z",
+		"certificate": null,
+		"key": null,
+		"intermediate_certificate": null
+	}`, uid)
+
+	listSslResponse := fmt.Sprintf(`
+	{
+		"response": [%[1]s],
+		"count": 1,
+		"pagination": {
+			"previous": null,
+			"next": null,
+			"current": 1,
+			"per_page": 30,
+			"count": 1,
+			"pages": 1
+		}
+	}`, sslData)
+	deleteSslResponse := fmt.Sprintf(`{"response": %[1]s}`, sslData)
+	createSslResponse := fmt.Sprintf(`
 	{
 		"response": {
-			"uuid": "ssl-%[1]s",
-			"name": "my-serv-new",
+			"uuid": null,
+			"name": null,
 			"server_group_id": null,
 			"server_names": "example.com",
 			"sha256_fingerprint": "f33832c92a78e776c15fed3f9d1f6fb4b7f0f2ce7f126c2495ea62618ef8e195",
@@ -172,18 +239,17 @@ func testAccCloud66SslCertificateManual(stackID string, uid string) {
 			"type": "manual",
 			"ssl_termination": true,
 			"has_intermediate_cert": false,
-			"status": 3,
+			"status": 1,
 			"created_at": "2019-10-23T14:15:53Z",
 			"updated_at": "2020-03-04T12:48:25Z",
-			"expires_at": "2020-06-02T11:48:04Z",
+			"expires_at": null,
 			"certificate": null,
 			"key": null,
 			"intermediate_certificate": null
 		}
-	}
-`, uid)
+	}`)
 
-	httpmock.RegisterResponder("POST", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, data))
-	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates/ssl-"+uid+".json", httpmock.NewStringResponder(200, data))
-	httpmock.RegisterResponder("DELETE", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates/ssl-"+uid+".json", httpmock.NewStringResponder(200, data))
+	httpmock.RegisterResponder("POST", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, createSslResponse))
+	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, listSslResponse))
+	httpmock.RegisterResponder("DELETE", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates/ssl-"+uid+".json", httpmock.NewStringResponder(200, deleteSslResponse))
 }
