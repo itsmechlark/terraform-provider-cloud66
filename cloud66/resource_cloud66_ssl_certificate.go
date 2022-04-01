@@ -172,15 +172,15 @@ func resourceCloud66SslCertificateImport(d *schema.ResourceData, meta interface{
 	// split the id so we can lookup
 	idAttr := strings.SplitN(d.Id(), "/", 2)
 	if len(idAttr) != 2 {
-		return nil, fmt.Errorf("invalid id (\"%s\") specified, should be in format \"stackID/sslID\"", d.Id())
+		return nil, fmt.Errorf("invalid id (\"%s\") specified, should be in format \"stackID/sha256Fingerprint\"", d.Id())
 	}
 
-	stackID, sslID := idAttr[0], idAttr[1]
+	stackID, sha256Fingerprint := idAttr[0], idAttr[1]
 
-	log.Printf("[DEBUG] Importing SSL Cert %s for stack %s", sslID, stackID)
+	log.Printf("[DEBUG] Importing SSL Cert %s for stack %s", sha256Fingerprint, stackID)
 
-	d.Set("stack_id", stackID)
-	d.SetId(sslID)
+	d.Set("sha256_fingerprint", sha256Fingerprint)
+	d.SetId(stackID)
 
 	resourceCloud66SslCertificateRead(d, meta)
 
