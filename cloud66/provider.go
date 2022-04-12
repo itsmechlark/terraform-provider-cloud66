@@ -36,9 +36,11 @@ func Provider() *schema.Provider {
 		ConfigureFunc: providerConfigure,
 
 		DataSourcesMap: map[string]*schema.Resource{
-			"cloud66_stack": dataSourceCloud66Stack(),
+			"cloud66_env_variable": dataSourceCloud66EnvVariable(),
+			"cloud66_stack":        dataSourceCloud66Stack(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
+			"cloud66_env_variable":    resourceCloud66EnvVariable(),
 			"cloud66_ssl_certificate": resourceCloud66SslCertificate(),
 		},
 	}

@@ -7,13 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.8] - 2022-04-01
+## [0.2.0] - 2022-04-12
+### Added
+- **New Resource**: `cloud66_env_variable`
+- **New Data Source**: `cloud66_env_variable`
 
+## [0.1.8] - 2022-04-01
 ### Fixed
 - Import SSL certificate
 
 ## [0.1.0] - 2022-03-06
-
 ### Added
 
 - **New Resource**: `cloud66_ssl_certificate`

@@ -49,6 +49,14 @@ func generateRandomUid() string {
 	return acctest.RandStringFromCharSet(32, acctest.CharSetAlphaNum)
 }
 
+func generateRandomEnvKey() string {
+	return acctest.RandString(10)
+}
+
+func generateRandomEnvValue() string {
+	return acctest.RandString(10)
+}
+
 func init() {
 	httpmock.Activate()
 }
@@ -252,4 +260,56 @@ func testAccCloud66SslCertificateManual(stackID string, uid string) {
 	httpmock.RegisterResponder("POST", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, createSslResponse))
 	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, listSslResponse))
 	httpmock.RegisterResponder("DELETE", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates/ssl-"+uid+".json", httpmock.NewStringResponder(200, deleteSslResponse))
+}
+
+func testAccCloud66EnvVariable(stackID string, key string, value string) {
+	envVarData := fmt.Sprintf(`
+	{
+		"id": 2426460,
+		"key": "%[1]s",
+		"value": "%[2]s",
+		"readonly": false,
+		"created_at": "2019-10-23T14:15:53Z",
+		"updated_at": "2020-03-04T12:48:25Z",
+		"is_password": false,
+		"is_generated": false,
+		"history": []
+	}`, key, value)
+
+	listEnvVarResponse := fmt.Sprintf(`
+	{
+		"response": [%[1]s],
+		"count": 1,
+		"pagination": {
+			"previous": null,
+			"next": null,
+			"current": 1,
+			"per_page": 30,
+			"count": 1,
+			"pages": 1
+		}
+	}`, envVarData)
+	createEnvVarResponse := fmt.Sprint(`
+	{
+		"response": {
+			"id": 3360669,
+			"user": "some-user@example.com",
+			"resource_type": "stack",
+			"action": "env-var-new",
+			"resource_id": "66204",
+			"started_via": "api",
+			"started_at": "2022-04-12T10:12:46Z",
+			"finished_at": null,
+			"finished_success": null,
+			"finished_message": null,
+			"finished_result": null
+		}
+	}`)
+	updateEnvVarResponse := createEnvVarResponse
+	deleteEnvVarResponse := createEnvVarResponse
+
+	httpmock.RegisterResponder("POST", "https://app.cloud66.com/api/3/stacks/"+stackID+"/environments.json", httpmock.NewStringResponder(200, createEnvVarResponse))
+	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+stackID+"/environments.json", httpmock.NewStringResponder(200, listEnvVarResponse))
+	httpmock.RegisterResponder("PUT", "https://app.cloud66.com/api/3/stacks/"+stackID+"/environments/"+key+".json", httpmock.NewStringResponder(200, updateEnvVarResponse))
+	httpmock.RegisterResponder("DELETE", "https://app.cloud66.com/api/3/stacks/"+stackID+"/environments/"+key+".json", httpmock.NewStringResponder(200, deleteEnvVarResponse))
 }
