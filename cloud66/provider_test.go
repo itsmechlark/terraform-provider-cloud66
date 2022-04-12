@@ -313,3 +313,57 @@ func testAccCloud66EnvVariable(stackID string, key string, value string) {
 	httpmock.RegisterResponder("PUT", "https://app.cloud66.com/api/3/stacks/"+stackID+"/environments/"+key+".json", httpmock.NewStringResponder(200, updateEnvVarResponse))
 	httpmock.RegisterResponder("DELETE", "https://app.cloud66.com/api/3/stacks/"+stackID+"/environments/"+key+".json", httpmock.NewStringResponder(200, deleteEnvVarResponse))
 }
+
+func testAccCloud66FirewallRequest(stackID string) {
+	firewallData := fmt.Sprintf(`
+	{
+		"id": 168806136,
+        "from_ip": "0.0.0.0/0",
+        "from_group_id": null,
+        "from_server_id": null,
+        "to_ip": null,
+        "to_group_id": 112989,
+        "to_server_id": null,
+        "protocol": "tcp",
+        "port": 5432,
+        "rule_type": "user",
+        "comments": null,
+        "created_at": "2022-04-13T04:21:46Z",
+        "updated_at": "2022-04-13T04:21:46Z"
+	}`)
+
+	listFirewallResponse := fmt.Sprintf(`
+	{
+		"response": [%[1]s],
+		"count": 1,
+		"pagination": {
+			"previous": null,
+			"next": null,
+			"current": 1,
+			"per_page": 30,
+			"count": 1,
+			"pages": 1
+		}
+	}`, firewallData)
+	createFirewallResponse := fmt.Sprint(`
+	{
+		"response": {
+			"id": 3360669,
+			"user": "some-user@example.com",
+			"resource_type": "stack",
+			"action": "update_firewall",
+			"resource_id": "66204",
+			"started_via": "api",
+			"started_at": "2022-04-12T10:12:46Z",
+			"finished_at": null,
+			"finished_success": null,
+			"finished_message": null,
+			"finished_result": null
+		}
+	}`)
+	getFirewallResponse := fmt.Sprintf(`{ "response": %[1]s }`, firewallData)
+
+	httpmock.RegisterResponder("POST", "https://app.cloud66.com/api/3/stacks/"+stackID+"/firewalls.json", httpmock.NewStringResponder(200, createFirewallResponse))
+	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+stackID+"/firewalls.json", httpmock.NewStringResponder(200, listFirewallResponse))
+	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+stackID+"/firewalls/168806136.json", httpmock.NewStringResponder(200, getFirewallResponse))
+}

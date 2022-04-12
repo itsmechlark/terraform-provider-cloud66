@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2022-04-13
+### Added
+- **New Resource**: `cloud66_firewall`
+
 ## [0.2.0] - 2022-04-12
 ### Added
 - **New Resource**: `cloud66_env_variable`

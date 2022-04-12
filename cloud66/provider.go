@@ -41,6 +41,7 @@ func Provider() *schema.Provider {
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"cloud66_env_variable":    resourceCloud66EnvVariable(),
+			"cloud66_firewall":        resourceCloud66Firewall(),
 			"cloud66_ssl_certificate": resourceCloud66SslCertificate(),
 		},
 	}
