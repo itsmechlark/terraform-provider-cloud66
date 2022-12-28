@@ -9,12 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-var firewallProtocol = map[int]string{
-	1: "tcp",
-	2: "udp",
-	3: "icmp",
-}
-
 type Firewall struct {
 	Id           int    `json:"id"`
 	FromIp       string `json:"from_ip"`
