@@ -37,6 +37,7 @@ func Provider() *schema.Provider {
 
 		DataSourcesMap: map[string]*schema.Resource{
 			"cloud66_env_variable": dataSourceCloud66EnvVariable(),
+			"cloud66_servers":      dataSourceCloud66Servers(),
 			"cloud66_stack":        dataSourceCloud66Stack(),
 		},
 		ResourcesMap: map[string]*schema.Resource{

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Support VSCode DevContainers
+- **New Data Source**: `cloud66_servers`
 
 ## [0.3.0] - 2022-04-13
 ### Added
