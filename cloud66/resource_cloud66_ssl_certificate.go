@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	api "github.com/cloud66-oss/cloud66"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	api "github.com/itsmechlark/cloud66"
 )
 
 func resourceCloud66SslCertificate() *schema.Resource {

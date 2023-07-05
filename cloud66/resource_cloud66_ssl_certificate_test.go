@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"testing"
 
-	api "github.com/cloud66-oss/cloud66"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	api "github.com/itsmechlark/cloud66"
 )
 
 func TestAccCloud66SslCertificate_LetsEncrypt(t *testing.T) {
