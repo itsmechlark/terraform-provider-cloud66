@@ -37,6 +37,18 @@ func dataSourceCloud66Servers() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
+						"ext_ipv6": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"int_ipv4": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"int_ipv6": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
 						"dns_record": {
 							Type:     schema.TypeString,
 							Computed: true,
@@ -75,6 +87,9 @@ func dataSourceCloud66StackServers(d *schema.ResourceData, meta interface{}) err
 			server["name"] = serverResp.Name
 			server["address"] = serverResp.Address
 			server["ext_ipv4"] = serverResp.ExtIpV4
+			server["ext_ipv6"] = serverResp.ExtIpV6
+			server["int_ipv4"] = serverResp.IntIpV4
+			server["int_ipv6"] = serverResp.IntIpV6
 			server["dns_record"] = serverResp.DnsRecord
 			server["server_type"] = serverResp.ServerType
 			server["roles"] = serverResp.Roles

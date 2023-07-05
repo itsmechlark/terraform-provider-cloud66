@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"regexp"
 
-	api "github.com/cloud66-oss/cloud66"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	api "github.com/itsmechlark/cloud66"
 )
 
 type ProviderConfig struct {
