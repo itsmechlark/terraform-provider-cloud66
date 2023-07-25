@@ -34,6 +34,7 @@ func resourceCloud66SslCertificateCreate(d *schema.ResourceData, meta interface{
 	client := providerConfig.client
 
 	stackID := d.Get("stack_id").(string)
+	allowOverwrite := d.Get("allow_overwrite").(bool)
 
 	servernames := []string{}
 	servernamesRaw := d.Get("server_names").(*schema.Set)
@@ -60,9 +61,28 @@ func resourceCloud66SslCertificateCreate(d *schema.ResourceData, meta interface{
 		}
 	}
 
-	log.Printf("[INFO] Creating SSL Cert %s for stack %s", newRecord.Type, stackID)
+	record := &api.SslCertificate{}
+	err := fmt.Errorf("")
 
-	record, err := client.CreateSslCertificate(stackID, &newRecord)
+	if allowOverwrite {
+		log.Printf("[INFO] Fetching default SSL Certfor stack %s", stackID)
+		// check if there is already a certificate
+		certs, err := client.ListSslCertificates(stackID)
+		if err == nil && len(certs) > 0 {
+			cert := &certs[0]
+			log.Printf("[INFO] Overwriting SSL Cert %s UUID for stack %s", cert.Uuid, stackID)
+			record, err = client.UpdateSslCertificate(stackID, cert.Uuid, &newRecord)
+
+			if record == nil {
+				log.Print(fmt.Errorf("error overwriting SSL Certificate %q: %s", stackID, err))
+			}
+		}
+	}
+
+	if !allowOverwrite || record == nil {
+		log.Printf("[INFO] Creating SSL Cert %s for stack %s", newRecord.Type, stackID)
+		record, err = client.CreateSslCertificate(stackID, &newRecord)
+	}
 
 	if record == nil {
 		return fmt.Errorf("error creating SSL Certificate %q: %s", stackID, err)
