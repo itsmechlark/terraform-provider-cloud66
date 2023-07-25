@@ -75,6 +75,8 @@ func resourceCloud66SslCertificateCreate(d *schema.ResourceData, meta interface{
 
 			if record == nil {
 				log.Print(fmt.Errorf("error overwriting SSL Certificate %q: %s", stackID, err))
+			} else {
+				record.Type = d.Get("type").(string)
 			}
 		}
 	}
