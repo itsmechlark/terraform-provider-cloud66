@@ -76,5 +76,10 @@ func resourceCloud66SslCertificateSchema() map[string]*schema.Schema {
 			Computed: true,
 			Optional: true,
 		},
+		"allow_overwrite": {
+			Type:     schema.TypeBool,
+			Optional: true,
+			Default:  false,
+		},
 	}
 }

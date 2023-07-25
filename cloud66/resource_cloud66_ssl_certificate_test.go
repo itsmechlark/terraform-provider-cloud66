@@ -115,3 +115,49 @@ func testAccCloud66SslCertificateAttributes(stackID string, ssl *api.SslCertific
 		return nil
 	}
 }
+
+func TestAccCloud66SslCertificate_Overwrite(t *testing.T) {
+	t.Parallel()
+
+	var ssl api.SslCertificate
+	rnd := generateRandomResourceName()
+	stackID := generateRandomUid()
+	uid := generateRandomUid()
+
+	testAccCloud66SslCertificateLetsEncrypt(stackID, uid)
+
+	resourceName := "cloud66_ssl_certificate." + rnd
+	resource.Test(t, resource.TestCase{
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloud66SslCertificate_Overwrite(stackID, rnd),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCloud66SslCertificateAttributes(stackID, &ssl),
+					resource.TestCheckResourceAttr(resourceName, "ca_name", "Let's Encrypt"),
+					resource.TestCheckResourceAttr(resourceName, "type", "lets_encrypt"),
+					resource.TestCheckResourceAttr(resourceName, "ssl_termination", "true"),
+					resource.TestCheckResourceAttr(resourceName, "server_group_id", "0"),
+					resource.TestCheckResourceAttr(resourceName, "server_names.#", "1"),
+					resource.TestCheckResourceAttr(resourceName, "has_intermediate_cert", "true"),
+					resource.TestCheckResourceAttr(resourceName, "sha256_fingerprint", "UXXsUuBNZQhNBBsPjaEATCA8t06O2RvgxuMC16q1XLCCHkIitBvMcDqoUpNO16oK"),
+				),
+			},
+		},
+	})
+}
+
+func testAccCloud66SslCertificate_Overwrite(stactID string, rnd string) string {
+	return fmt.Sprintf(`
+provider "cloud66" {
+	access_token = "%[1]s"
+}
+
+resource "cloud66_ssl_certificate" "%[3]s" {
+	stack_id = "%[2]s"
+	type = "lets_encrypt"
+	server_names = ["example.com"]
+	allow_overwrite = true
+}
+`, testAccCloud66AccessToken, stactID, rnd)
+}

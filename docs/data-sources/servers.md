@@ -32,9 +32,10 @@ Read-Only:
 - `address` (String)
 - `dns_record` (String)
 - `ext_ipv4` (String)
+- `ext_ipv6` (String)
+- `int_ipv4` (String)
+- `int_ipv6` (String)
 - `name` (String)
 - `roles` (List of String)
 - `server_type` (String)
 - `uid` (String)
-
-

@@ -1,22 +1,40 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/debian
 {
-	"name": "Terraform Modules",
+	"name": "Terraform Cloud66 Provider",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
+	"image": "mcr.microsoft.com/devcontainers/go:1-bullseye",
 	"features": {
-		"ghcr.io/devcontainers/features/aws-cli:1": {},
-		"ghcr.io/devcontainers/features/azure-cli:1": {},
-		"ghcr.io/devcontainers/features/github-cli:1": {},
-		"ghcr.io/devcontainers/features/go:1": {},
-		"ghcr.io/devcontainers/features/ruby:1": {},
-		"ghcr.io/devcontainers/features/terraform:1": {},
-		"ghcr.io/devcontainers-contrib/features/digitalocean-cli:1": {}
+		"ghcr.io/devcontainers/features/github-cli:latest": {},
+		"ghcr.io/devcontainers/features/java:latest": {},
+		"ghcr.io/devcontainers/features/terraform:latest": {
+			"version": "1.5.0",
+			"terragrunt": "latest",
+			"installTFsec": false
+		}
 	},
-
-	// Configure tool-specific properties.
-	// "customizations": {},
-
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"1password.op-vscode",
+				"doppler.doppler-vscode",
+				"hashicorp.hcl",
+				"hashicorp.terraform",
+				"github.copilot",
+				"github.copilot-chat",
+				"github.heygithub",
+				"github.remotehub",
+				"github.vscode-codeql",
+				"github.vscode-github-actions",
+				"github.vscode-pull-request-github",
+				"golang.go",
+				"visualstudioexptteam.vscodeintellicode",
+				"ms-vsliveshare.vsliveshare"
+			]
+		}
+	},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "vscode"
 }

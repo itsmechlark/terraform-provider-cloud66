@@ -1,0 +1,20 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=827846
+    // for the documentation about the extensions.json format
+    "recommendations": [
+        "1password.op-vscode",
+        "doppler.doppler-vscode",
+        "hashicorp.hcl",
+        "hashicorp.terraform",
+        "github.copilot",
+        "github.copilot-chat",
+        "github.heygithub",
+        "github.remotehub",
+        "github.vscode-codeql",
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "golang.go",
+        "visualstudioexptteam.vscodeintellicode",
+        "ms-vsliveshare.vsliveshare"
+    ]
+}
