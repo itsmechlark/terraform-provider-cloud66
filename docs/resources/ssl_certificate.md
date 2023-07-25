@@ -22,6 +22,7 @@ description: |-
 
 ### Optional
 
+- `allow_overwrite` (Boolean)
 - `ca_name` (String)
 - `certificate` (String)
 - `has_intermediate_cert` (Boolean)
@@ -47,5 +48,3 @@ Optional:
 
 - `create` (String)
 - `update` (String)
-
-
