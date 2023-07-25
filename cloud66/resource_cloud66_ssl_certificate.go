@@ -103,6 +103,10 @@ func resourceCloud66SslCertificateRead(d *schema.ResourceData, meta interface{})
 
 	records, err := client.ListSslCertificates(stackID)
 	if records != nil {
+		if len(records) == 1 {
+			setCloud66SslCertificateData(d, &records[0])
+			return nil
+		}
 		for _, record := range records {
 			sha256Fingerprint := *record.SHA256Fingerprint
 			if sha256Fingerprint == d.Get("sha256_fingerprint").(string) {
