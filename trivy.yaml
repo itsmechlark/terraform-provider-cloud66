@@ -1,0 +1,12 @@
+timeout: 10m
+dependency-tree: true
+list-all-pkgs: true
+exit-code: 1
+scan:
+  skip-files:
+    - .env*
+vulnerability:
+  type:
+    - os
+    - library
+  ignore-unfixed: true

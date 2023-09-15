@@ -11,7 +11,8 @@
 			"version": "1.5.0",
 			"terragrunt": "latest",
 			"installTFsec": false
-		}
+		},
+		"ghcr.io/itsmechlark/features/trivy": {}
 	},
 	"customizations": {
 		// Configure properties specific to VS Code.

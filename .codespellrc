@@ -1,0 +1,2 @@
+[codespell]
+skip = ./cloud66/*_test.go
