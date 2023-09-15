@@ -39,8 +39,6 @@ func TestProvider_impl(t *testing.T) {
 	var _ *schema.Provider = Provider()
 }
 
-type preCheckFunc = func(*testing.T)
-
 func generateRandomResourceName() string {
 	return acctest.RandStringFromCharSet(10, acctest.CharSetAlpha)
 }
@@ -139,7 +137,7 @@ func testAccCloud66Stack(uid string, name string) {
 }
 
 func testAccCloud66Servers(uid string) {
-	data := fmt.Sprintf(`
+	data := `
 	{
 		"response": [
 		  {
@@ -199,7 +197,7 @@ func testAccCloud66Servers(uid string) {
 		  "pages": 1
 		}
 	  }
-`)
+`
 
 	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+uid+"/servers.json", httpmock.NewStringResponder(200, data))
 }
@@ -239,7 +237,7 @@ func testAccCloud66SslCertificateLetsEncrypt(stackID string, uid string) {
 		}
 	}`, sslData)
 	deleteSslResponse := fmt.Sprintf(`{"response": %[1]s}`, sslData)
-	createSslResponse := fmt.Sprintf(`
+	createSslResponse := `
 	{
 		"response": {
 			"uuid": null,
@@ -259,7 +257,7 @@ func testAccCloud66SslCertificateLetsEncrypt(stackID string, uid string) {
 			"key": null,
 			"intermediate_certificate": null
 		}
-	}`)
+	}`
 
 	httpmock.RegisterResponder("POST", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, createSslResponse))
 	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, listSslResponse))
@@ -302,7 +300,7 @@ func testAccCloud66SslCertificateManual(stackID string, uid string) {
 		}
 	}`, sslData)
 	deleteSslResponse := fmt.Sprintf(`{"response": %[1]s}`, sslData)
-	createSslResponse := fmt.Sprintf(`
+	createSslResponse := `
 	{
 		"response": {
 			"uuid": null,
@@ -322,7 +320,7 @@ func testAccCloud66SslCertificateManual(stackID string, uid string) {
 			"key": null,
 			"intermediate_certificate": null
 		}
-	}`)
+	}`
 
 	httpmock.RegisterResponder("POST", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, createSslResponse))
 	httpmock.RegisterResponder("GET", "https://app.cloud66.com/api/3/stacks/"+stackID+"/ssl_certificates.json", httpmock.NewStringResponder(200, listSslResponse))
@@ -356,7 +354,7 @@ func testAccCloud66EnvVariable(stackID string, key string, value string) {
 			"pages": 1
 		}
 	}`, envVarData)
-	createEnvVarResponse := fmt.Sprint(`
+	createEnvVarResponse := `
 	{
 		"response": {
 			"id": 3360669,
@@ -371,7 +369,7 @@ func testAccCloud66EnvVariable(stackID string, key string, value string) {
 			"finished_message": null,
 			"finished_result": null
 		}
-	}`)
+	}`
 	updateEnvVarResponse := createEnvVarResponse
 	deleteEnvVarResponse := createEnvVarResponse
 
@@ -382,7 +380,7 @@ func testAccCloud66EnvVariable(stackID string, key string, value string) {
 }
 
 func testAccCloud66FirewallRequest(stackID string) {
-	firewallData := fmt.Sprintf(`
+	firewallData := `
 	{
 		"id": 168806136,
         "from_ip": "0.0.0.0/0",
@@ -397,7 +395,7 @@ func testAccCloud66FirewallRequest(stackID string) {
         "comments": null,
         "created_at": "2022-04-13T04:21:46Z",
         "updated_at": "2022-04-13T04:21:46Z"
-	}`)
+	}`
 
 	listFirewallResponse := fmt.Sprintf(`
 	{
@@ -412,7 +410,7 @@ func testAccCloud66FirewallRequest(stackID string) {
 			"pages": 1
 		}
 	}`, firewallData)
-	createFirewallResponse := fmt.Sprint(`
+	createFirewallResponse := `
 	{
 		"response": {
 			"id": 3360669,
@@ -427,7 +425,7 @@ func testAccCloud66FirewallRequest(stackID string) {
 			"finished_message": null,
 			"finished_result": null
 		}
-	}`)
+	}`
 	getFirewallResponse := fmt.Sprintf(`{ "response": %[1]s }`, firewallData)
 
 	httpmock.RegisterResponder("POST", "https://app.cloud66.com/api/3/stacks/"+stackID+"/firewalls.json", httpmock.NewStringResponder(200, createFirewallResponse))

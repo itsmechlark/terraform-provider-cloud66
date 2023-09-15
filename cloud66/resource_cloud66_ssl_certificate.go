@@ -208,7 +208,7 @@ func resourceCloud66SslCertificateImport(d *schema.ResourceData, meta interface{
 	d.Set("sha256_fingerprint", sha256Fingerprint)
 	d.SetId(stackID)
 
-	resourceCloud66SslCertificateRead(d, meta)
+	resourceCloud66SslCertificateRead(d, meta) //nolint:golint,errcheck
 
 	return []*schema.ResourceData{d}, nil
 }

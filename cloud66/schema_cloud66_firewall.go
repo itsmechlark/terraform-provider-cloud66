@@ -23,24 +23,27 @@ type Firewall struct {
 }
 
 func (firewall *Firewall) Protocol() string {
-	if firewall.ProtocolCode == "1" {
+	switch firewall.ProtocolCode {
+	case "1":
 		return "tcp"
-	} else if firewall.ProtocolCode == "2" {
+	case "2":
 		return "udp"
-	} else if firewall.ProtocolCode == "3" {
+	case "3":
 		return "icmp"
-	} else {
+	default:
 		return firewall.ProtocolCode
 	}
 }
 
 func (firewall *Firewall) SetProtocol(protocol string) {
-	if protocol == "tcp" {
+	switch protocol {
+	case "tcp":
 		firewall.ProtocolCode = "1"
-	} else if protocol == "udp" {
+	case "udp":
 		firewall.ProtocolCode = "2"
-	} else if protocol == "icmp" {
+	case "icmp":
 		firewall.ProtocolCode = "3"
+	default:
 	}
 }
 

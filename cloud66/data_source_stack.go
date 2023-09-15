@@ -51,7 +51,7 @@ func dataSourceCloud66StackRead(d *schema.ResourceData, meta interface{}) error 
 	stackEnv := d.Get("environment").(string)
 
 	var stack api.Stack
-	if stackID != "" {
+	if stackID != "" { //nolint:golint,gocritic
 		stackResp, err := client.FindStackByUid(stackID)
 		if stackResp != nil {
 			stack = *stackResp

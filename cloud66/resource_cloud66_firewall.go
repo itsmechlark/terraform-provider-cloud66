@@ -43,7 +43,7 @@ func resourceCloud66FirewallCreate(d *schema.ResourceData, meta interface{}) err
 	fromIp := d.Get("from_ip").(string)
 	fromGroupId := d.Get("from_group_id").(int)
 	fromServerId := d.Get("from_server_id").(int)
-	if fromIp != "" {
+	if fromIp != "" { //nolint:golint,gocritic
 		newRecord.FromIp = fromIp
 	} else if fromGroupId != 0 {
 		newRecord.FromGroupId = fromGroupId
@@ -54,7 +54,7 @@ func resourceCloud66FirewallCreate(d *schema.ResourceData, meta interface{}) err
 	toIp := d.Get("to_ip").(string)
 	toGroupId := d.Get("to_group_id").(int)
 	toServerId := d.Get("to_server_id").(int)
-	if toIp != "" {
+	if toIp != "" { //nolint:golint,gocritic
 		newRecord.ToIp = toIp
 	} else if toGroupId != 0 {
 		newRecord.ToGroupId = toGroupId
@@ -127,7 +127,7 @@ func resourceCloud66FirewallImport(d *schema.ResourceData, meta interface{}) ([]
 	d.Set("stack_id", stackID)
 	d.SetId(id)
 
-	resourceCloud66FirewallRead(d, meta)
+	resourceCloud66FirewallRead(d, meta) //nolint:golint,errcheck
 
 	return []*schema.ResourceData{d}, nil
 }

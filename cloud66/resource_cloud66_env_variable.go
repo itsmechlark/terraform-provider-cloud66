@@ -136,7 +136,7 @@ func resourceCloud66EnvVariableImport(d *schema.ResourceData, meta interface{}) 
 	d.Set("stack_id", stackID)
 	d.SetId(key)
 
-	resourceCloud66EnvVariableRead(d, meta)
+	resourceCloud66EnvVariableRead(d, meta) //nolint:golint,errcheck
 
 	return []*schema.ResourceData{d}, nil
 }

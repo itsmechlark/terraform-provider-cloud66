@@ -49,6 +49,20 @@ jobs:
               labels: ['wip']
             })
 
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: ^1.17
+        cache: false
+
+    - name: Run Lint
+      uses: golangci/golangci-lint-action@v3
+
   codespell:
     runs-on: ubuntu-latest
     steps:
@@ -67,7 +81,7 @@ jobs:
 
   unit_test:
     runs-on: ${{ matrix.os }}
-    needs: [setup_pr, codespell]
+    needs: [setup_pr, lint, codespell]
     strategy:
       fail-fast: false
       matrix:
