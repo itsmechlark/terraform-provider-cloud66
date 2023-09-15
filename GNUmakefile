@@ -10,11 +10,11 @@ build: vet fmt
 	go install
 
 test: fmt
-	go test -v $(TEST) || exit 1
+	go test -covermode atomic -coverprofile=covprofile -v $(TEST) || exit 1
 	echo $(TEST) | xargs -t -n4 go test $(TESTARGS) -timeout=30s -parallel=4 -race
 
 testacc: fmt
-	TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m
+	TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m -covermode atomic -coverprofile=covprofile 
 
 lint: tools terraform-provider-lint golangci-lint
 

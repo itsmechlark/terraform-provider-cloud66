@@ -1,6 +1,4 @@
-<a href="https://terraform.io">
-    <img src="https://raw.githubusercontent.com/hashicorp/terraform-website/master/content/source/assets/images/logo-terraform-main.svg" alt="Terraform logo" title="Terraform" align="right" height="50" />
-</a>
+[![Coverage Status](https://coveralls.io/repos/github/itsmechlark/terraform-provider-cloud66/badge.svg?branch=main)](https://coveralls.io/github/itsmechlark/terraform-provider-cloud66?branch=main)
 
 # Cloud66 Terraform Provider
 

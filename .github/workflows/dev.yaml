@@ -92,6 +92,14 @@ jobs:
     - name: Test
       run: make test
 
+    - name: Coveralls Parallel
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        flag-name: unit-go-${{ runner.os }}
+        parallel: true
+        path-to-lcov: ./covprofile
+
   integration_test:
     needs: [unit_test]
     runs-on: ubuntu-latest
@@ -112,3 +120,22 @@ jobs:
       
     - name: Run Integration Tests
       run: make testacc
+
+    - name: Coveralls Parallel
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        flag-name: integration-go-${{ runner.os }}
+        parallel: true
+        path-to-lcov: ./covprofile
+
+  coverage:
+    needs: [unit_test, integration_test]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Upload coverage to Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true
+        file: ./covprofile
