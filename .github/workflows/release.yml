@@ -87,8 +87,7 @@ jobs:
         with:
           token: ${{ secrets.DEVOPS_TOKEN }}
           release-type: go
-          version-file: lib/http/auth0/version.rb
-          bootstrap-sha: 99dab702f72bd50aa72164f657bd47ab5d88b260
+          bootstrap-sha: 48eb0f97cddc5c2f6af991748a57c7142af15723
           changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"perf","section":"Performance Improvements","hidden":false},{"type":"docs","section":"Documentation","hidden":true},{"type":"test","section":"Tests","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false},{"type":"ci","section":"Miscellaneous","hidden":true}]'
 
       - name: Push to Release Branch
