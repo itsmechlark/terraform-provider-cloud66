@@ -14,9 +14,6 @@ jobs:
       contents: read
       issues: write
       pull-requests: write
-    # Dependabot no longer have access to secrets unless we move to pull_request_target.
-    # Read more: https://github.blog/changelog/2021-02-19-github-actions-workflows-triggered-by-dependabot-prs-will-run-with-read-only-permissions
-    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       # Remove review_ready label when new commit push to PR
       - name: Remove review_ready label

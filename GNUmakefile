@@ -7,14 +7,8 @@ VERSION=$(shell git describe --tags --always)
 default: build
 
 tools:
-	@echo "==> installing required tooling..."
-	@sh "$(CURDIR)/scripts/gogetcookie.sh"
-	go install github.com/client9/misspell/cmd/misspell@latest
-	go install github.com/bflad/tfproviderlint/cmd/tfproviderlint@latest
-	go install github.com/bflad/tfproviderdocs@latest
-	go install github.com/katbyte/terrafmt@latest
-	go install golang.org/x/tools/cmd/goimports@latest
-	go install mvdan.cc/gofumpt@latest
+	@echo "==> Installing development tooling..."
+	go generate -tags tools tools/tools.go
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $$(go env GOPATH || $$GOPATH)/bin v1.51.1
 
 build: vet fmt
@@ -42,3 +36,5 @@ vet:
 fmt:
 	gofmt -w $(GOFMT_FILES)
 
+docs: tools
+	@sh -c "'$(CURDIR)/scripts/generate-docs.sh'"
