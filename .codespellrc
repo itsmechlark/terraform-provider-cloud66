@@ -1,2 +1,2 @@
 [codespell]
-skip = ./cloud66/*_test.go,./tools/go.sum,./tools/go.mod
+skip = ./cloud66/*_test.go,./tools/go.sum,./tools/go.mod,./go.sum,./go.mod
