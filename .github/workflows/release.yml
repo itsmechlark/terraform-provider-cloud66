@@ -113,12 +113,47 @@ jobs:
         parallel-finished: true
         file: ./covprofile
 
+  docs:
+    runs-on: ubuntu-latest
+    needs: [unit_test, integration_test]
+    permissions:
+      contents: write
+    outputs:
+      changed: ${{ steps.docs.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.17
+
+      - run: make docs
+      - name: Check changes
+        id: docs
+        shell: bash
+        run: |
+          if [[ `git status --porcelain | grep "docs/"` ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Push docs
+        if: ${{ steps.docs.outputs.changed == 'true' }}
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add docs/
+          git commit -m "docs: Generate Registry Documentation"
+          git push
+
   release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
-    needs: [lint, codespell, integration_test]
+    needs: [lint, codespell, integration_test, docs]
+    if: ${{ needs.docs.outputs.changed == 'false' }}
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
     steps:
